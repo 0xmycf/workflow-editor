@@ -10,9 +10,9 @@ import {isPromise} from "./typeguards";
  * declared.
  */
 function fixCreateDefaultNodeForSlotFailsInStrictMode() {
-    LGraphCanvas.prototype.createDefaultNodeForSlot = function (optPass) { // addNodeMenu for connection
-        var optPass = optPass || {};
-        var opts = Object.assign({
+    LGraphCanvas.prototype.createDefaultNodeForSlot = function (optPassP) { // addNodeMenu for connection
+        const optPass = optPassP ?? {};
+        const opts = Object.assign({
                 nodeFrom: null // input
                 , slotFrom: null // input
                 , nodeTo: null   // output
@@ -24,10 +24,10 @@ function fixCreateDefaultNodeForSlotFailsInStrictMode() {
             }
             , optPass
         );
-        var that = this;
+        const that = this;
 
-        var isFrom = opts.nodeFrom && opts.slotFrom !== null;
-        var isTo = !isFrom && opts.nodeTo && opts.slotTo !== null;
+        const isFrom = opts.nodeFrom && opts.slotFrom !== null;
+        const isTo = !isFrom && opts.nodeTo && opts.slotTo !== null;
 
         if (!isFrom && !isTo) {
             console.warn("No data passed to createDefaultNodeForSlot " + opts.nodeFrom + " " + opts.slotFrom + " " + opts.nodeTo + " " + opts.slotTo);
@@ -38,10 +38,10 @@ function fixCreateDefaultNodeForSlotFailsInStrictMode() {
             return false;
         }
 
-        var nodeX = isFrom ? opts.nodeFrom : opts.nodeTo;
-        var slotX = isFrom ? opts.slotFrom : opts.slotTo;
+        const nodeX = isFrom ? opts.nodeFrom : opts.nodeTo;
+        let slotX = isFrom ? opts.slotFrom : opts.slotTo;
 
-        var iSlotConn = false;
+        let iSlotConn = false;
         switch (typeof slotX) {
             case "string":
                 iSlotConn = isFrom ? nodeX.findOutputSlot(slotX, false) : nodeX.findInputSlot(slotX, false);
@@ -68,17 +68,17 @@ function fixCreateDefaultNodeForSlotFailsInStrictMode() {
         }
 
         // check for defaults nodes for this slottype
-        var fromSlotType = slotX.type == LiteGraph.EVENT ? "_event_" : slotX.type;
-        var slotTypesDefault = isFrom ? LiteGraph.slot_types_default_out : LiteGraph.slot_types_default_in;
+        const fromSlotType = slotX.type == LiteGraph.EVENT ? "_event_" : slotX.type;
+        const slotTypesDefault = isFrom ? LiteGraph.slot_types_default_out : LiteGraph.slot_types_default_in;
         if (slotTypesDefault && slotTypesDefault[fromSlotType]) {
             if (slotX.link !== null) {
                 // is connected
             } else {
-                // is not not connected
+                // is not connected
             }
             let nodeNewType = false;
             if (typeof slotTypesDefault[fromSlotType] == "object") {
-                for (var typeX in slotTypesDefault[fromSlotType]) {
+                for (const typeX in slotTypesDefault[fromSlotType]) {
                     if (opts.nodeType == slotTypesDefault[fromSlotType][typeX] || opts.nodeType == "AUTO") {
                         nodeNewType = slotTypesDefault[fromSlotType][typeX];
                         // console.log("opts.nodeType == slotTypesDefault[fromSlotType][typeX] :: "+opts.nodeType);
@@ -89,7 +89,7 @@ function fixCreateDefaultNodeForSlotFailsInStrictMode() {
                 if (opts.nodeType == slotTypesDefault[fromSlotType] || opts.nodeType == "AUTO") nodeNewType = slotTypesDefault[fromSlotType];
             }
             if (nodeNewType) {
-                var nodeNewOpts = false;
+                let nodeNewOpts = false;
                 if (typeof nodeNewType == "object" && nodeNewType.node) {
                     nodeNewOpts = nodeNewType;
                     nodeNewType = nodeNewType.node;
@@ -97,18 +97,18 @@ function fixCreateDefaultNodeForSlotFailsInStrictMode() {
 
                 //that.graph.beforeChange();
 
-                var newNode = LiteGraph.createNode(nodeNewType);
+                const newNode = LiteGraph.createNode(nodeNewType);
                 if (newNode) {
                     // if is object pass options
                     if (nodeNewOpts) {
                         if (nodeNewOpts.properties) {
-                            for (var i in nodeNewOpts.properties) {
+                            for (const i in nodeNewOpts.properties) {
                                 newNode.addProperty(i, nodeNewOpts.properties[i]);
                             }
                         }
                         if (nodeNewOpts.inputs) {
                             newNode.inputs = [];
-                            for (var i in nodeNewOpts.inputs) {
+                            for (const i in nodeNewOpts.inputs) {
                                 newNode.addOutput(
                                     nodeNewOpts.inputs[i][0],
                                     nodeNewOpts.inputs[i][1]
@@ -117,7 +117,7 @@ function fixCreateDefaultNodeForSlotFailsInStrictMode() {
                         }
                         if (nodeNewOpts.outputs) {
                             newNode.outputs = [];
-                            for (var i in nodeNewOpts.outputs) {
+                            for (const i in nodeNewOpts.outputs) {
                                 newNode.addOutput(
                                     nodeNewOpts.outputs[i][0],
                                     nodeNewOpts.outputs[i][1]
@@ -183,7 +183,7 @@ function addRunStepAsync() {
         this.globaltime = 0.001 * (start - this.starttime);
 
         //not optimal: executes possible pending actions in node, problem is it is not optimized
-        //it is done here as if it was done in the later loop it wont be called in the node missed the onExecute
+        //it is done here as if it was done in the later loop it won't be called in the node missed the onExecute
 
         try {
             //iterations
@@ -238,8 +238,8 @@ function addRunStepAsync() {
             this.stop();
         }
 
-        var now = LiteGraph.getTime();
-        var elapsed = now - start;
+        const now = LiteGraph.getTime();
+        let elapsed = now - start;
         if (elapsed == 0) {
             elapsed = 1;
         }

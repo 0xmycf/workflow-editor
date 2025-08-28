@@ -5,7 +5,7 @@ export type ValidationError = {
 
 export class ValidationSummary {
     private placeholder?: HTMLElement;
-    private errors: {[operatorName: string]: string[]} = {};
+    private errors: { [operatorName: string]: string[] } = {};
 
     createContainer() {
         this.placeholder = document.createElement("div");
@@ -36,7 +36,7 @@ export class ValidationSummary {
     </h4>
     ${messageBody}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
-</div>`;
+   </div>`;
             } else {
                 this.placeholder.textContent = "";
             }

@@ -14,7 +14,7 @@ export default class ParamsEditor {
 
     private offcanvasBs: Offcanvas;
     private editor?: JSONEditor;
-    private holderDiv: HTMLElement;
+    private readonly holderDiv: HTMLElement;
     private titleContainer: HTMLElement;
     private helpLink: HTMLElement;
     private currentNode?: OperatorNodeInfo;

@@ -29,6 +29,7 @@ export interface WidgetModel {
 type ObjectHash = Record<string, any>;
 type ChangeEventHandler<Payload> = (_: unknown, value: Payload) => void;
 type EventHandler = (...args: any[]) => void;
+
 /**
  * Autocomplete works for literal string unions, but adding a union
  * of `string` negates autocomplete entirely. This is a workaround
@@ -132,15 +133,15 @@ export function render({model, el}: RenderContext<WidgetModel>) {
     const graph = createUI(model, el);
 
     const initialServerUrl = model.get("serverUrl");
-    const initalToken = model.get("token");
+    const initialToken = model.get("token");
 
-    if (initialServerUrl && initalToken) {
+    if (initialServerUrl && initialToken) {
         const initialWorkflow = model.get("workflow");
-        setupGraph(graph, initialServerUrl, initalToken, initialWorkflow);
+        void setupGraph(graph, initialServerUrl, initialToken, initialWorkflow);
     }
 
     model.on("change:serverUrl", () => {
-        setupGraph(
+        void setupGraph(
             graph,
             model.get("serverUrl"),
             model.get("token"),
@@ -156,6 +157,6 @@ export function render({model, el}: RenderContext<WidgetModel>) {
     })
     model.on("change:workflow", () => {
         if (graph.isExportInProgress) return;
-        importWorkflow(graph, model.get("workflow"));
+        void importWorkflow(graph, model.get("workflow"));
     })
 }

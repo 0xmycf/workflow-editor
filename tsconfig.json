@@ -15,7 +15,7 @@
 		"moduleResolution": "bundler",
 		"isolatedModules": true,
 		"declaration": true,
-		"outDir": "src/workflow_editor/static",
+		"outDir": "dist",
 		"jsx": "react",
 		"strict": true,
 		"noUnusedLocals": true,

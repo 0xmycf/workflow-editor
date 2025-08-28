@@ -20,7 +20,7 @@ export default class ArrayBuilderNode extends LGraphNode {
             return targetSlot;
         }
         // try to connect to any free input
-        for (var i = 0; i < this.inputs.length; ++i) {
+        for (let i = 0; i < this.inputs.length; ++i) {
             if (this.inputs[i].link === null) {
                 return i;
             }

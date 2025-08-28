@@ -18,21 +18,37 @@ import {getBackend, getValidationSummary} from "../util";
 import applyAllBugfixes from "../bugfixes";
 import {ValidationSummary} from "./validationSummary";
 import {importWorkflow} from "./workflowImporter";
-import {AnyModel, WidgetModel } from "../widget";
+import {AnyModel, WidgetModel} from "../widget";
 
 function createCanvas() {
-    let domCanvas = document.createElement("canvas");
+    const container = document.createElement("div");
+    container.classList.add("workflow_editor-container");
+    document.body.appendChild(container); // append container first
+
+    const domCanvas = document.createElement("canvas");
     domCanvas.classList.add("workflow_editor-canvas");
-    domCanvas.width = 800;
-    domCanvas.height = 500;
-    domCanvas.addEventListener('contextmenu', function (event) {
-        //hide jupyter application contextmenu
+    container.appendChild(domCanvas);
+
+    const ratio = window.devicePixelRatio || 1;
+    const rect = domCanvas.getBoundingClientRect();
+
+    domCanvas.width = rect.width * ratio;
+    domCanvas.height = rect.height * ratio;
+
+    domCanvas.style.width = rect.width + "px";
+    domCanvas.style.height = rect.height + "px";
+
+    const ctx = domCanvas.getContext("2d");
+    ctx?.scale(ratio, ratio);
+
+    domCanvas.addEventListener("contextmenu", (event) => {
         event.stopPropagation();
-    })
+    });
+
     return domCanvas;
 }
 
-function createContainer(domCanvas: HTMLCanvasElement) {
+function createContainer(domCanvas: HTMLCanvasElement): HTMLDivElement {
     let domLitegraphContainer = document.createElement("div");
     domLitegraphContainer.classList.add("litegraph");
     domLitegraphContainer.appendChild(domCanvas);
@@ -173,12 +189,17 @@ export function clearGraph(graph: LGraph) {
     outNode.pos = [100, 100];
 }
 
-export function createUI(model: AnyModel<WidgetModel>, el: HTMLElement) {
+export function createUI(model: AnyModel<WidgetModel>, el: HTMLElement): LGraph {
     const domCanvas = createCanvas();
     el.appendChild(createContainer(domCanvas));
     const graph = createGraph(domCanvas);
     registerExporter(graph, model);
-    // @ts-ignore
+    domCanvas.addEventListener("contextmenu", (e) => {
+        console.debug({'x': e.x, 'y': e.y});
+    })
+
+    // const canvas = graph.list_of_graphcanvas[0];
+
     graph.list_of_graphcanvas[0].getMenuOptions = getCanvasMenuOptions;
 
     const validationSummary = new ValidationSummary();

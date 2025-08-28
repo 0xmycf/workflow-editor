@@ -2,8 +2,15 @@
 	"name": "workflow-editor",
 	"author": "Lutz Kremer",
 	"version": "1.0.0",
-	"main": "src/workflow_editor/static/widget.js",
-	"types": "src/workflow_editor/static/widget.d.ts",
+	"main": "dist/widget.js",
+	"types": "dist/widget.d.ts",
+	"module": "dist/widget.js",
+	"exports": {
+		".": {
+			"import": "./dist/widget.js",
+			"require": "./dist/widget.js"
+		}
+	},
 	"files": [
 		"src/workflow_editor/static/widget.js",
 		"src/workflow_editor/static/widget.css",

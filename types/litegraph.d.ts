@@ -1,4 +1,4 @@
-import {INodeInputSlot, INodeOutputSlot, LGraphGroup} from "litegraph.js/build/litegraph.core";
+import {INodeInputSlot, INodeOutputSlot} from "litegraph.js/build/litegraph.core";
 
 declare module "litegraph.js/build/litegraph.core" {
     interface LGraphCanvas {
@@ -30,11 +30,17 @@ declare module "litegraph.js/build/litegraph.core" {
 
     interface LGraph {
         addOutput(name: string, type: string | -1 | 0, value: any): void;
+
         setOutputData(name: string, value: any): void;
+
         runStepAsync(): Promise<void>;
+
         doExport(): Promise<void>;
+
         isExportInProgress?: boolean;
+
         onNodeConnectionChange(pinType: number, node: LGraphNode, slot: number): void;
+
         add(node: LGraphNode | LGraphGroup, skip_compute_order?: boolean): void;
     }
 

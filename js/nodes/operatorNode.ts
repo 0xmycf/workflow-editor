@@ -53,7 +53,7 @@ export function registerWorkflowOperator(op: OperatorDefinitionWrapper) {
     }
 
     class NewNode extends LGraphNode implements OperatorNodeInfo {
-        static title = op.title;
+        static title = op.id + " " + op.title;
         static desc = op.description;
 
         private _paramValues: Record<string, any> = {};

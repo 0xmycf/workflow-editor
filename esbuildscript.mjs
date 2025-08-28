@@ -8,7 +8,7 @@ const ctx = await esbuild.context({
     minify: true,
     bundle: true,
     format: "esm",
-    outdir: "src/workflow_editor/static",
+    outdir: "dist",
     plugins: [polyfillNode()],
     sourcemap: watchMode ? "inline" : undefined
 });
