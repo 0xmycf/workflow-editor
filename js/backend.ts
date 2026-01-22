@@ -1,12 +1,15 @@
 import {fetchAndParse} from "./util";
 import {Workflow, WorkflowSchema} from "./schema/workflowSchema";
-import {CreateProjectInput, NoContentResponse, ResultType, UpdateProjectInput} from "./schema/backendSchema";
 import {
+    CreateProjectInput,
     GetDatasetResponse,
     IdResponse,
-    TypedResultDescriptor,
     ListProjectsResponse,
-    LoadProjectResponse
+    LoadProjectResponse,
+    NoContentResponse,
+    ResultType,
+    TypedResultDescriptor,
+    UpdateProjectInput
 } from "./schema/backendSchema";
 
 let cachedWorkflowSchema: WorkflowSchema | null = null;

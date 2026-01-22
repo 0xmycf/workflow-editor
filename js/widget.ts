@@ -5,11 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import {LGraph, LiteGraph} from "litegraph.js/build/litegraph.core";
 import {registerWorkflowOperator} from "./nodes/operatorNode";
 import WorkflowOutNode from "./nodes/workflowOutNode";
-import {
-    ARRAY_BUILDER_NODE_TYPE,
-    OPERATOR_CATEGORY,
-    WORKFLOW_OUT_NODE_TYPE
-} from "./constants";
+import {ARRAY_BUILDER_NODE_TYPE, OPERATOR_CATEGORY, WORKFLOW_OUT_NODE_TYPE} from "./constants";
 import {isDatatypeDefinition} from "./typeguards";
 import {getDefinitionName, simpleErrorHandler} from "./util";
 import {Backend} from "./backend";
@@ -41,32 +37,41 @@ type LiteralUnion<T, U = string> = T | (U & {});
 
 export interface AnyModel<T extends ObjectHash = ObjectHash> {
     get<K extends keyof T>(key: K): T[K];
+
     set<K extends keyof T>(key: K, value: T[K]): void;
+
     off<K extends keyof T>(
         eventName?: LiteralUnion<`change:${K & string}` | "msg:custom"> | null,
         callback?: EventHandler | null,
     ): void;
+
     on(
         eventName: "msg:custom",
         callback: (msg: any, buffers: DataView[]) => void,
     ): void;
+
     on<K extends `change:${keyof T & string}`>(
         eventName: K,
         callback: K extends `change:${infer Key}`
             ? ChangeEventHandler<T[Key]>
             : never,
     ): void;
+
     on<K extends `change:${string}`>(
         eventName: K,
         callback: ChangeEventHandler<any>,
     ): void;
+
     on(eventName: string, callback: EventHandler): void;
+
     save_changes(): void;
+
     send(
         content: any,
         callbacks?: any,
         buffers?: ArrayBuffer[] | ArrayBufferView[],
     ): void;
+
     widget_manager: any;
 }
 
@@ -74,6 +79,7 @@ export interface RenderContext<T extends ObjectHash = ObjectHash> {
     model: AnyModel<T>;
     el: HTMLElement;
 }
+
 //endregion
 
 function registerBackend(serverUrl: string, token: string, graph: LGraph) {

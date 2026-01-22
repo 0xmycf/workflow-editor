@@ -46,7 +46,7 @@ export default class ParamsEditor {
         document.body.appendChild(offcanvasDiv);
 
         const saveButton = offcanvasDiv.querySelector(`.editor-save`)!;
-        saveButton.addEventListener("click", function() {
+        saveButton.addEventListener("click", function () {
             ParamsEditor.Instance.handleSave();
         });
         this.offcanvasBs = Offcanvas.getOrCreateInstance(offcanvasDiv);
@@ -54,7 +54,7 @@ export default class ParamsEditor {
         this.titleContainer = offcanvasDiv.querySelector(".offcanvas-title")!;
         this.helpLink = offcanvasDiv.querySelector('a[target="_blank"]')!;
 
-        this.holderDiv.addEventListener("keypress", function(event) {
+        this.holderDiv.addEventListener("keypress", function (event) {
             if (event.keyCode === 13 || event.which === 13) {
                 // enter pressed in modal
                 if (document.activeElement?.nodeName === "INPUT" && document.activeElement.getAttribute("type") === "text") {

@@ -95,10 +95,10 @@ export type WorkflowOperator = z.infer<typeof BaseWorkflowOperator> & {
 };
 
 export const WorkflowOperator: z.ZodType<WorkflowOperator> = BaseWorkflowOperator.extend({
-   sources: z.lazy(() => z.record(
-       z.string(),
-       z.union([WorkflowOperator, z.array(WorkflowOperator)])
-   ).optional())
+    sources: z.lazy(() => z.record(
+        z.string(),
+        z.union([WorkflowOperator, z.array(WorkflowOperator)])
+    ).optional())
 });
 
 export const Workflow = z.object({

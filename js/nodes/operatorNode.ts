@@ -1,5 +1,6 @@
 import {
-    ContextMenuItem, IContextMenuOptions,
+    ContextMenuItem,
+    IContextMenuOptions,
     INodeInputSlot,
     INodeOutputSlot,
     INodeSlot,
@@ -13,7 +14,8 @@ import {
     buildWorkflowFromOutput,
     getBackend,
     getValidationSummary,
-    isEmpty, simpleErrorHandler
+    isEmpty,
+    simpleErrorHandler
 } from "../util";
 import type {WorkflowOperator} from "../schema/workflowSchema";
 import {isSourceArray} from "../typeguards";
