@@ -1,7 +1,9 @@
 import {Offcanvas} from "bootstrap";
 import {OperatorDefinitionParams} from "../schema/workflowSchema";
 import {PARAMS_EDITOR_ID} from "../constants";
-// @ts-ignore
+// JSONEditor package lacks proper TypeScript definitions
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore - @json-editor/json-editor has incomplete type definitions
 import {JSONEditor} from "@json-editor/json-editor/dist/jsoneditor";
 import {OperatorNodeInfo} from "../nodes/operatorNode";
 

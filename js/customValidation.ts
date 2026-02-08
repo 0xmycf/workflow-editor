@@ -89,7 +89,9 @@ async function validateColumnRangeFilter(instance: WorkflowOperator, backend: Ba
     const workflowMetadata = await backend.getWorkflowMetadata(workflow);
 
     const expectedName: string = instance.params.column;
-    // @ts-ignore
+    // Backend metadata types don't include runtime column structure
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore - workflowMetadata.columns is dynamically typed based on workflow
     const foundColumnMeta = workflowMetadata.columns[expectedName];
 
     if (!foundColumnMeta) {

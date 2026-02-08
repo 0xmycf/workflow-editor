@@ -84,7 +84,7 @@ export interface RenderContext<T extends ObjectHash = ObjectHash> {
 
 function registerBackend(serverUrl: string, token: string, graph: LGraph) {
     const backend = new Backend(serverUrl, token);
-    // @ts-ignore
+    // Type augmentation defined in types/litegraph-extensions.d.ts
     graph.backend = backend;
     return backend;
 }
@@ -114,7 +114,9 @@ async function registerDefinitions(backend: Backend) {
 }
 
 async function setupGraph(graph: LGraph, serverUrl: string, token: string, workflow?: Workflow) {
-    // @ts-ignore
+    // LiteGraph type definitions don't include getNodeTypesInCategory return type
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore - getNodeTypesInCategory returns node classes with internal properties
     const registeredOperators = LiteGraph.getNodeTypesInCategory(OPERATOR_CATEGORY);
 
     for (const registeredOperator of registeredOperators) {
@@ -123,7 +125,9 @@ async function setupGraph(graph: LGraph, serverUrl: string, token: string, workf
         for (const nodeWithType of nodesWithType) {
             graph.remove(nodeWithType);
         }
-        // @ts-ignore
+        // LiteGraph internal registration API
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore - unregisterNodeType is not in type definitions
         LiteGraph.unregisterNodeType(registeredOperator);
     }
 

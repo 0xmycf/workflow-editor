@@ -58,7 +58,9 @@ export default class ParamsView implements IWidget<object> {
         }
         ctx.font = ParamsView.FONT;
         ctx.textAlign = "left";
-        // @ts-ignore
+        // LiteGraph color constant not exposed in type definitions
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore - WIDGET_SECONDARY_TEXT_COLOR is internal to LiteGraph
         ctx.fillStyle = LiteGraph.WIDGET_SECONDARY_TEXT_COLOR;
 
         const maxLineWidth = width - 2 * ParamsView.MARGIN;

@@ -113,12 +113,17 @@ function getCanvasMenuOptions(this: LGraphCanvas): ContextMenuItem[] {
                 const nodes = LiteGraph.getNodeTypesInCategory(OPERATOR_CATEGORY, canvas.filter || graph.filter);
                 const entries = nodes
                     .filter(node => {
-                        // @ts-ignore
+                        // Node classes have skip_list property not in type definitions
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore - skip_list is custom property on node class
                         return !node.skip_list;
                     })
                     .map(node => ({
-                        // @ts-ignore
+                        // Node class internal properties
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore - type and title are on node class
                         value: node.type,
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
                         content: node.title,
                         has_submenu: false,
@@ -170,6 +175,7 @@ function getCanvasMenuOptions(this: LGraphCanvas): ContextMenuItem[] {
                                             const workflowId = project.layers.find(layer => layer.name === layerName)!.workflow;
                                             const workflow = await backend.loadWorkflow(workflowId);
                                             await importWorkflow(canvas.graph, workflow, layerName);
+                                        // LiteGraph expects ContextMenuEventListener but async callbacks aren't typed
                                         } as unknown as ContextMenuEventListener
                                     }))
                                 }
@@ -199,7 +205,7 @@ export function createUI(model: AnyModel<WidgetModel>, el: HTMLElement): LGraph 
     graph.list_of_graphcanvas[0].getMenuOptions = getCanvasMenuOptions;
 
     const validationSummary = new ValidationSummary();
-    // @ts-ignore
+    // Type augmentation defined in types/litegraph-extensions.d.ts
     graph.validationSummary = validationSummary;
     el.appendChild(validationSummary.createContainer());
 

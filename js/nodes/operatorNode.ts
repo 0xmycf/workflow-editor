@@ -41,14 +41,18 @@ export function registerWorkflowOperator(op: OperatorDefinitionWrapper) {
         .filter(sourceDef => !isSourceArray(sourceDef))
         .forEach(sourceDef => {
             for (const singleInputType of sourceDef.pinType.split(",")) {
-                // @ts-ignore
+                // LiteGraph internal type registry - not exposed in type definitions
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore - slot_types_default_out is internal to LiteGraph
                 let defaultOut: string[] = LiteGraph.slot_types_default_out[singleInputType];
                 if (!defaultOut.includes(nodeId)) defaultOut.push(nodeId);
             }
         });
 
     if (!op.hasDynamicOutputType) {
-        // @ts-ignore
+        // LiteGraph internal type registry - not exposed in type definitions
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore - slot_types_default_in is internal to LiteGraph
         // noinspection JSMismatchedCollectionQueryUpdate
         let defaultIn: string[] = LiteGraph.slot_types_default_in[op.outputTypeOnStart];
         defaultIn.push(nodeId);
@@ -240,6 +244,7 @@ export function registerWorkflowOperator(op: OperatorDefinitionWrapper) {
         }
 
         getSlotMenuOptions(slot: INodeSlot): ContextMenuItem[] {
+            // LiteGraph's INodeSlot type is incomplete - need internal structure
             const slot2 = slot as unknown as {
                 input?: INodeInputSlot;
                 output?: INodeOutputSlot;
@@ -251,7 +256,9 @@ export function registerWorkflowOperator(op: OperatorDefinitionWrapper) {
             if (isConnectedOutput) {
                 return [{
                     content: "Disconnect Links",
-                    // @ts-ignore
+                    // LiteGraph context menu expects slot property
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore - ContextMenuItem type doesn't include slot property
                     slot
                 }];
             } else {

@@ -60,7 +60,10 @@ function addNode(litegraph: LGraph, g: graphlib.Graph, fullType: string, params?
     const newNode = LiteGraph.createNode(fullType);
     if (!newNode) throw new Error("Node '" + fullType + "' was not registered in the editor");
     litegraph.add(newNode, true);
-    if (params) (newNode as unknown as OperatorNodeInfo).paramValues = params!;
+    // LGraphNode doesn't expose paramValues, but OperatorNode subclass does
+    if (params) {
+        (newNode as unknown as OperatorNodeInfo).paramValues = params;
+    }
     g.setNode(String(newNode.id), {
         width: newNode.size[0],
         height: newNode.size[1] + LiteGraph.NODE_TITLE_HEIGHT
@@ -118,7 +121,9 @@ function applyPositions(litegraph: LGraph, g: graphlib.Graph) {
 }
 
 function createGroup(litegraph: LGraph, g: graphlib.Graph, templateName: string) {
-    // @ts-ignore
+    // LGraphGroup constructor not properly exported in type definitions
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore - LGraphGroup is available at runtime but not in types
     const group = new LGraphGroup(templateName);
     litegraph.add(group, true);
     group.size = [

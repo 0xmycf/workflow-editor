@@ -26,20 +26,18 @@ export async function fetchAndParse<T extends z.ZodTypeAny>(input: URL | Request
 }
 
 export function getBackend(graph: LGraph): Backend {
-    // @ts-ignore
     return graph.backend;
 }
 
 export function getValidationSummary(graph: LGraph): ValidationSummary {
-    // @ts-ignore
     return graph.validationSummary;
 }
 
-export function joinDistinct(arr: any[], separator?: string) {
+export function joinDistinct<T>(arr: T[], separator?: string): string {
     return [...new Set(arr)].join(separator);
 }
 
-export function isEmpty(arg: undefined | null | object | any[]): boolean {
+export function isEmpty(arg: undefined | null | object | unknown[]): boolean {
     if (arg === undefined || arg === null) {
         return true;
     } else if (Array.isArray(arg)) {
@@ -53,13 +51,25 @@ export function uppercaseFirstLetter(s: string): string {
     return s[0].toUpperCase() + s.substring(1);
 }
 
+/**
+ * Asserts that a string is a valid workflow type (Vector, Raster, or Plot).
+ * This helper safely converts lowercase type strings to the proper Workflow type.
+ */
+function assertWorkflowType(type: string): "Vector" | "Raster" | "Plot" {
+    const normalized = uppercaseFirstLetter(type);
+    if (normalized !== "Vector" && normalized !== "Raster" && normalized !== "Plot") {
+        throw new Error(`Invalid workflow type: ${type}`);
+    }
+    return normalized;
+}
+
 export function buildWorkflowFromInput(node: LGraphNode, slotOrName: number | string): Workflow | null {
     const slot: number = typeof slotOrName === "number" ? slotOrName : node.findInputSlot(slotOrName);
     const data = node.getInputData(slot);
     if (!data) return null;
 
     return {
-        type: uppercaseFirstLetter(node.getInputDataType(slot)) as any,
+        type: assertWorkflowType(node.getInputDataType(slot)),
         operator: data
     };
 }
@@ -69,7 +79,7 @@ export function buildWorkflowFromOutput(node: LGraphNode): Workflow | null {
     if (!data) return null;
 
     return {
-        type: uppercaseFirstLetter(node.getOutputInfo(0)!.type) as any,
+        type: assertWorkflowType(node.getOutputInfo(0)!.type),
         operator: data
     };
 }
@@ -190,6 +200,7 @@ export async function buildDefaultSymbologyForWorkflow(workflow: Workflow, workf
     }
 }
 
-export function simpleErrorHandler(actionDescription: string, error: any) {
-    alert("Failed to " + actionDescription + ": " + error.message);
+export function simpleErrorHandler(actionDescription: string, error: unknown): void {
+    const message = error instanceof Error ? error.message : String(error);
+    alert("Failed to " + actionDescription + ": " + message);
 }
