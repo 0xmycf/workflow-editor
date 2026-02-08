@@ -80,9 +80,9 @@ function registerExporter(graph: LGraph, model: AnyModel<WidgetModel>) {
         const validationSummary = getValidationSummary(graph);
 
         if (workflowOutCount === 0) {
-            validationSummary.addError("Allgemein", `Es muss ein Ausgabeblock vorhanden sein. Füge dem Graphen einen ${WorkflowOutNode.title}-Block hinzu und verbinde ihn mit einem Operator, zum Beispiel "GdalSource".`);
+            validationSummary.addError("General", `An output block must be present. Add a ${WorkflowOutNode.title} block to the graph and connect it to an operator, for example "GdalSource".`);
         } else if (workflowOutCount > 1) {
-            validationSummary.addError("Allgemein", `Damit das Ergebnis eindeutig ist, darf es nur einen Ausgabeblock geben. Lösche überschüssige ${WorkflowOutNode.title}-Blöcke.`);
+            validationSummary.addError("General", `For an unambiguous result, there can only be one output block. Delete excess ${WorkflowOutNode.title} blocks.`);
         }
         validationSummary.render();
         graph.list_of_graphcanvas.forEach(o => {

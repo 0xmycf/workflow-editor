@@ -121,7 +121,7 @@ export function registerWorkflowOperator(op: OperatorDefinitionWrapper) {
                 params: this.paramValues
             };
             if (isEmpty(this.paramValues) && op.hasParams) {
-                validationSummary.addError(NewNode.title, "Die Konfigurationsparameter wurden nicht angegeben.");
+                validationSummary.addError(NewNode.title, "The configuration parameters were not specified.");
                 isValid = false;
             }
             if (!isEmpty(op.sources)) {
@@ -133,20 +133,20 @@ export function registerWorkflowOperator(op: OperatorDefinitionWrapper) {
                     res.sources[sourceName] = sourceData;
 
                     if (sourceData === undefined && op.isSourceRequired(sourceName)) {
-                        validationSummary.addError(NewNode.title, `Der Parameter "${sourceName}" erwartet Daten, es wurden aber keine eingegeben.`);
+                        validationSummary.addError(NewNode.title, `The parameter "${sourceName}" expects data, but none was provided.`);
                         isValid = false;
                     }
                     if (isSourceArray(sourceDef)) {
                         const sourceNode = this.getInputNode(sourceSlot);
 
                         if (!(sourceNode instanceof ArrayBuilderNode)) {
-                            validationSummary.addError(NewNode.title, `Der Parameter "${sourceName}" erwartet ein Array aus ${sourceDef.innerType}-Datensätzen, das mit ${ArrayBuilderNode.title} erstellt wurde.`);
+                            validationSummary.addError(NewNode.title, `The parameter "${sourceName}" expects an array of ${sourceDef.innerType} datasets created with ${ArrayBuilderNode.title}.`);
                             isValid = false;
                         } else if (sourceNode.combinedTypes === "") {
-                            validationSummary.addError(NewNode.title, `Das an den Parameter "${sourceName}" übergebene Array ist leer.`);
+                            validationSummary.addError(NewNode.title, `The array passed to parameter "${sourceName}" is empty.`);
                             isValid = false;
                         } else if (sourceNode.combinedTypes !== sourceDef.innerType) {
-                            validationSummary.addError(NewNode.title, `Der Parameter "${sourceName}" erwartet ein Array aus ${sourceDef.innerType}-Datensätzen, aber es enthält ${sourceNode.combinedTypes}.`);
+                            validationSummary.addError(NewNode.title, `The parameter "${sourceName}" expects an array of ${sourceDef.innerType} datasets, but it contains ${sourceNode.combinedTypes}.`);
                             isValid = false;
                         }
                     }

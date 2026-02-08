@@ -31,9 +31,9 @@ export default class WorkflowOutNode extends LGraphNode {
                 const validationSummary = getValidationSummary(this.graph);
 
                 if (this.isInputConnected(0))
-                    validationSummary.addError(WorkflowOutNode.title, "Es ist kein Datensatz angekommen. Prüfe, ob bei dem angeschlossenen Operator Fehler vorliegen.");
+                    validationSummary.addError(WorkflowOutNode.title, "No dataset was received. Check if the connected operator has errors.");
                 else
-                    validationSummary.addError(WorkflowOutNode.title, "Es ist kein Datensatz angekommen. Verbinde diesen Operator mit einem anderen Operator, zum Beispiel \"GdalSource\".");
+                    validationSummary.addError(WorkflowOutNode.title, "No dataset was received. Connect this operator to another operator, for example \"GdalSource\".");
             }
         }
     }

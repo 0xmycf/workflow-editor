@@ -32,10 +32,10 @@ export class ValidationSummary {
                 this.placeholder.innerHTML = `<div class="alert alert-danger alert-dismissible" role="alert">
     <h4>
         <i class="fas fa-exclamation-triangle"></i>
-        Validierungsfehler beim Exportieren
+        Validation errors during export
     </h4>
     ${messageBody}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Schließen"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
    </div>`;
             } else {
                 this.placeholder.textContent = "";
