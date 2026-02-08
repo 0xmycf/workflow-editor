@@ -60,7 +60,6 @@ export default class ParamsEditor {
                 if (document.activeElement?.nodeName === "INPUT" && document.activeElement.getAttribute("type") === "text") {
                     // manually trigger change event on text inputs to update in model
                     document.activeElement.dispatchEvent(new Event("change"));
-                    console.log("updated input on enter");
                 }
                 ParamsEditor.Instance.handleSave();
             }
@@ -69,32 +68,26 @@ export default class ParamsEditor {
 
     public static get Instance() {
         if (this.instance) {
-            console.log("ParamsEditor already in static context");
             return this.instance;
         }
         let modalDiv: ParamsEditorDiv | null = document.getElementById(PARAMS_EDITOR_ID);
 
         if (modalDiv) {
-            console.log("Found ParamsEditor in body");
             return this.instance = modalDiv.instance!;
         }
-        console.log("Rendering new ParamsEditor");
         return this.instance = new this();
     }
 
     private handleSave() {
         if (!this.currentNode) {
-            console.log("ERROR: Editor detached from node on save.");
             return;
         }
         if (!this.editor) {
-            console.log("ERROR: No JSONEditor registered on save.");
             return;
         }
         const isValid = this.editor.validate().length === 0;
 
         if (isValid) {
-            console.log("saving", this.editor.getValue());
             this.currentNode.paramValues = this.editor.getValue();
             this.offcanvasBs.hide();
         } else {
@@ -104,18 +97,15 @@ export default class ParamsEditor {
     }
 
     show(currentNode: OperatorNodeInfo, schema: OperatorDefinitionParams) {
-        console.log("Schema:", schema);
         this.currentNode = currentNode;
 
         this.titleContainer.innerText = currentNode.title;
         this.helpLink.setAttribute("href", currentNode.help_url);
 
         if (this.editor && this.oldSchema !== schema) {
-            console.log("destroy editor with old schema");
             this.editor.destroy();
         }
         if (!this.editor || this.oldSchema !== schema) {
-            console.log("create new editor");
             this.editor = new JSONEditor(this.holderDiv, {
                 theme: "bootstrap5",
                 iconlib: "fontawesome5",
@@ -127,10 +117,7 @@ export default class ParamsEditor {
                 schema
             });
             this.oldSchema = schema;
-        } else if (this.editor.getValue() === currentNode.paramValues) {
-            console.log("value in existing editor did not change");
-        } else {
-            console.log("update value in existing editor");
+        } else if (this.editor.getValue() !== currentNode.paramValues) {
             this.editor.setValue(currentNode.paramValues);
         }
         this.offcanvasBs.show();

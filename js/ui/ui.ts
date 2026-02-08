@@ -88,7 +88,6 @@ function registerExporter(graph: LGraph, model: AnyModel<WidgetModel>) {
         graph.list_of_graphcanvas.forEach(o => {
             o.canvas.style.removeProperty("cursor");
         })
-        console.log("Export finished!", workflow);
     }
 
     graph.doExport = async () => {
@@ -194,9 +193,6 @@ export function createUI(model: AnyModel<WidgetModel>, el: HTMLElement): LGraph 
     el.appendChild(createContainer(domCanvas));
     const graph = createGraph(domCanvas);
     registerExporter(graph, model);
-    domCanvas.addEventListener("contextmenu", (e) => {
-        console.debug({'x': e.x, 'y': e.y});
-    })
 
     // const canvas = graph.list_of_graphcanvas[0];
 

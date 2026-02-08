@@ -13,7 +13,6 @@ import {simpleErrorHandler} from "../util";
 import {clearGraph} from "./ui";
 
 export async function importWorkflow(litegraph: LGraph, workflow: Workflow | undefined, templateName?: string) {
-    console.log("Importing workflow:", workflow);
     if (!templateName) {
         clearGraph(litegraph);
     }
