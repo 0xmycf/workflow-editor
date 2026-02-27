@@ -12,10 +12,7 @@
 		}
 	},
 	"files": [
-		"src/workflow_editor/static/widget.js",
-		"src/workflow_editor/static/widget.css",
-		"src/workflow_editor/static/widget.d.ts",
-		"src/workflow_editor/static/schema/workflowSchema.d.ts"
+		"dist"
 	],
 	"scripts": {
 		"dev": "node esbuildscript.mjs --watch",
