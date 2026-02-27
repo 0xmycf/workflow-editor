@@ -213,7 +213,7 @@ export function createUI(model: AnyModel<WidgetModel>, el: HTMLElement): LGraph 
     // Resize the canvas drawing buffer whenever the container changes size
     new ResizeObserver(() => {
         resizeCanvas(domCanvas, container);
-        liteGraphCanvas.setDirtyCanvas(true, true);
+        liteGraphCanvas.setDirty(true, true);
     }).observe(container);
 
     return graph;
