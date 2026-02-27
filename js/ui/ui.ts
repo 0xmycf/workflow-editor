@@ -194,7 +194,6 @@ export function clearGraph(graph: LGraph) {
 export function createUI(model: AnyModel<WidgetModel>, el: HTMLElement): LGraph {
     const domCanvas = createCanvas();
     const container = createContainer(domCanvas);
-    el.appendChild(container);
 
     const graph = createGraph(domCanvas);
     registerExporter(graph, model);
@@ -203,16 +202,19 @@ export function createUI(model: AnyModel<WidgetModel>, el: HTMLElement): LGraph 
 
     const liteGraphCanvas = graph.list_of_graphcanvas[0];
 
+    const validationSummary = new ValidationSummary();
+    // Type augmentation defined in types/litegraph-extensions.d.ts
+    graph.validationSummary = validationSummary;
+
+    // Validation summary first so it appears at the top; canvas fills the rest
+    el.appendChild(validationSummary.createContainer());
+    el.appendChild(container);
+
     // Resize the canvas drawing buffer whenever the container changes size
     new ResizeObserver(() => {
         resizeCanvas(domCanvas, container);
         liteGraphCanvas.setDirtyCanvas(true, true);
     }).observe(container);
-
-    const validationSummary = new ValidationSummary();
-    // Type augmentation defined in types/litegraph-extensions.d.ts
-    graph.validationSummary = validationSummary;
-    el.appendChild(validationSummary.createContainer());
 
     return graph;
 }

@@ -1,7 +1,6 @@
 .workflow_editor-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    inset: 0;
 }
 
 .workflow_editor-canvas {
@@ -9,6 +8,20 @@
     width: 100%;
     height: 100%;
 }
+
+.workflow_editor-validation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.workflow_editor-validation > * {
+    pointer-events: auto;
+}
+
 
 .workflow_editor-export {
     width: 4rem;
