@@ -20,26 +20,9 @@ import {ValidationSummary} from "./validationSummary";
 import {importWorkflow} from "./workflowImporter";
 import {AnyModel, WidgetModel} from "../widget";
 
-function createCanvas() {
-    const container = document.createElement("div");
-    container.classList.add("workflow_editor-container");
-    document.body.appendChild(container); // append container first
-
+function createCanvas(): HTMLCanvasElement {
     const domCanvas = document.createElement("canvas");
     domCanvas.classList.add("workflow_editor-canvas");
-    container.appendChild(domCanvas);
-
-    const ratio = window.devicePixelRatio || 1;
-    const rect = domCanvas.getBoundingClientRect();
-
-    domCanvas.width = rect.width * ratio;
-    domCanvas.height = rect.height * ratio;
-
-    domCanvas.style.width = rect.width + "px";
-    domCanvas.style.height = rect.height + "px";
-
-    const ctx = domCanvas.getContext("2d");
-    ctx?.scale(ratio, ratio);
 
     domCanvas.addEventListener("contextmenu", (event) => {
         event.stopPropagation();
@@ -49,10 +32,24 @@ function createCanvas() {
 }
 
 function createContainer(domCanvas: HTMLCanvasElement): HTMLDivElement {
-    let domLitegraphContainer = document.createElement("div");
-    domLitegraphContainer.classList.add("litegraph");
-    domLitegraphContainer.appendChild(domCanvas);
-    return domLitegraphContainer;
+    const container = document.createElement("div");
+    container.classList.add("workflow_editor-container");
+    container.appendChild(domCanvas);
+    return container;
+}
+
+function resizeCanvas(domCanvas: HTMLCanvasElement, container: HTMLDivElement): void {
+    const ratio = window.devicePixelRatio || 1;
+    const rect = container.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return;
+
+    domCanvas.width = rect.width * ratio;
+    domCanvas.height = rect.height * ratio;
+    domCanvas.style.width = rect.width + "px";
+    domCanvas.style.height = rect.height + "px";
+
+    const ctx = domCanvas.getContext("2d");
+    ctx?.scale(ratio, ratio);
 }
 
 function createGraph(domCanvas: HTMLCanvasElement) {
@@ -196,13 +193,21 @@ export function clearGraph(graph: LGraph) {
 
 export function createUI(model: AnyModel<WidgetModel>, el: HTMLElement): LGraph {
     const domCanvas = createCanvas();
-    el.appendChild(createContainer(domCanvas));
+    const container = createContainer(domCanvas);
+    el.appendChild(container);
+
     const graph = createGraph(domCanvas);
     registerExporter(graph, model);
 
-    // const canvas = graph.list_of_graphcanvas[0];
-
     graph.list_of_graphcanvas[0].getMenuOptions = getCanvasMenuOptions;
+
+    const liteGraphCanvas = graph.list_of_graphcanvas[0];
+
+    // Resize the canvas drawing buffer whenever the container changes size
+    new ResizeObserver(() => {
+        resizeCanvas(domCanvas, container);
+        liteGraphCanvas.setDirtyCanvas(true, true);
+    }).observe(container);
 
     const validationSummary = new ValidationSummary();
     // Type augmentation defined in types/litegraph-extensions.d.ts

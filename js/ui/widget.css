@@ -1,24 +1,14 @@
+.workflow_editor-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
 .workflow_editor-canvas {
-    left: 0;
-    right: 0;
-    position: absolute;
     display: block;
     width: 100%;
     height: 100%;
-    margin-bottom: 1em;
 }
-
-/*canvas.workflow_editor-canvas {*/
-/*	image-rendering: pixelated;*/
-/*}*/
-
-/*.litegraph > canvas {*/
-/*	width: 100%;*/
-/*	height: 100%;*/
-/*	max-width: 100%;*/
-/*	max-height: 100%;*/
-/*	image-rendering: pixelated;*/
-/*}*/
 
 .workflow_editor-export {
     width: 4rem;
